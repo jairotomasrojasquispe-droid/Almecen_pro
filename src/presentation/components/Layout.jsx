@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useRole } from '../../hooks/useRole' 
+import { Users } from 'lucide-react' // agrega Users
 import { supabase } from '../../infrastructure/supabase/client'
 import { LayoutDashboard, Package, History, BarChart3, LogOut } from 'lucide-react'
 
@@ -7,6 +9,7 @@ export default function Layout({children}){
   const loc = useLocation()
   const nav = useNavigate()
   const [online, setOnline] = useState(navigator.onLine)
+  const { role } = useRole() // <- CORREGIDO: destructuramos { role }
 
   useEffect(()=>{
     const goOnline = ()=> setOnline(true)
@@ -21,6 +24,7 @@ export default function Layout({children}){
 
   const logout = async ()=>{
     await supabase.auth.signOut()
+    localStorage.removeItem('myRole')
     nav('/login')
   }
 
@@ -36,7 +40,15 @@ export default function Layout({children}){
           <Item to="/" icon={LayoutDashboard} label="Dashboard" />
           <Item to="/productos" icon={Package} label="Productos" />
           <Item to="/kardex" icon={History} label="Kardex Tiempo Real" />
-          <Item to="/reportes" icon={BarChart3} label="Reportes" />
+          {/* Solo admin ve Reportes */}
+          {role === 'administrador' && (
+            <Item to="/reportes" icon={BarChart3} label="Reportes" />
+
+            
+          )}
+          {role === 'administrador' && (
+  <Item to="/usuarios" icon={Users} label="Usuarios" />
+)}
         </nav>
         <div className="sidebar-bottom">
           <div style={{
@@ -50,7 +62,7 @@ export default function Layout({children}){
             color: online ? '#166534' : '#991b1b',
             border: `1px solid ${online ? '#86efac' : '#fecaca'}`
           }}>
-            {online ? '🟢 Online - Sincronizado' : '🔴 Offline - Local'}
+            {online ? '🟢 Online - Sincronizado' : '🔴 Offline - Local'} - {role}
           </div>
           <button className="btn-logout" onClick={logout}><LogOut size={16}/>Cerrar Sesion</button>
           <small>v4.0 PRO - Multi-dispositivo {online ? '🟢' : '🔴'}</small>

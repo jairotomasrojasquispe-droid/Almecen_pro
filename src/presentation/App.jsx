@@ -7,6 +7,7 @@ import Productos from './pages/Productos.jsx'
 import Kardex from './pages/Kardex.jsx'
 import Reportes from './pages/Reportes.jsx'
 import { supabase } from '../infrastructure/supabase/client.js'
+import Usuarios from "./pages/Usuarios.jsx";
 
 export default function App(){
   const [user,setUser]=React.useState(null)
@@ -26,6 +27,7 @@ export default function App(){
         <Route path="/kardex" element={<Kardex />} />
         <Route path="/reportes" element={<Reportes />} />
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/usuarios" element={<Usuarios/>} />
       </Routes>
     </Layout>
   )
