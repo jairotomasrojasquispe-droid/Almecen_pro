@@ -85,6 +85,6 @@ create trigger on_auth_user_created after insert on auth.users for each row exec
 -- 8. Funcion para tiempo real: notificar stock bajo
 -- Ya viene con realtime de supabase, solo activa en Dashboard > Realtime
 
---Email: admin@brahmco.com
---Password: Brahmco123
+--Email: admin@brahmco.com, almacenero@brahmco.com
+--Password: Brahmco123, 12345678
 
