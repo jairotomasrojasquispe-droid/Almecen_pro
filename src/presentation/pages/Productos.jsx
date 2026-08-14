@@ -62,12 +62,31 @@ export default function Productos(){
     return data.publicUrl
   }
 
-  const saveProduct = async (e)=>{
+    const saveProduct = async (e)=>{
     e.preventDefault()
     let url = file? await uploadImage('productos', file) : null
-    const payload = { sku: form.sku, nombre: form.nombre, categoria: form.categoria, stock: parseInt(form.stock), stock_minimo: parseInt(form.stock_minimo), costo: parseFloat(form.costo), ubicacion: form.ubicacion, proveedor: form.proveedor, imagen_url: url }
+    const stockInicial = parseInt(form.stock)
+    const costoInicial = parseFloat(form.costo)
+    const payload = { sku: form.sku, nombre: form.nombre, categoria: form.categoria, stock: stockInicial, stock_minimo: parseInt(form.stock_minimo), costo: costoInicial, ubicacion: form.ubicacion, proveedor: form.proveedor, imagen_url: url }
     try{
-      await supabase.from('products').insert(payload)
+      // 1. Crea producto
+      const { data: newProduct, error } = await supabase.from('products').insert(payload).select().single()
+      if(error) throw error
+
+      // 2. Crea su PRIMER movimiento de Kardex como COMPRA INICIAL (así no duplicas)
+      if(newProduct){
+        await supabase.from('movements').insert({
+          product_id: newProduct.id,
+          tipo: 'ENTRADA',
+          cantidad: stockInicial,
+          motivo: `Compra Inicial | ${form.proveedor||'Sin proveedor'} | Costo S/ ${costoInicial}`,
+          proveedor: form.proveedor,
+          costo_unit: costoInicial,
+          area_destino: 'Almacen Central',
+          estado: 'ENTREGADO'
+        })
+      }
+
       setShow(false); load(); setForm({sku:'',nombre:'',categoria:'Herramienta',stock:1,stock_minimo:1,costo:0,ubicacion:'',proveedor:''}); setFile(null); setPreview('')
     }catch(err){
       const tempProduct = {...payload, id: `temp-${Date.now()}`, created_at: new Date().toISOString() }
