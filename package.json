@@ -1,9 +1,9 @@
 {
-  "name": "brahmco-taller-pro",
+  "name": "jr-soluciones-tecnologicas",
   "version": "4.0.0",
   "private": true,
   "type": "module",
-  "description": "Sistema de Almacen Taller Profesional - Brahmco - Vendible S/2500",
+  "description": "Sistema de Almacen Taller Profesional - JR Soluciones Tecnologicas",
   "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
