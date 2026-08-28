@@ -35,7 +35,7 @@ export default function Layout({children}){
   return (
     <div className="app-shell">
       <aside className="sidebar">
-        <div className="logo">BRAHMCO<span>TALLER PRO</span></div>
+        <div className="logo">JR SOLUCIONES TECNOLOGICAS<span>TALLER PRO</span></div>
         <nav className="nav">
           <Item to="/" icon={LayoutDashboard} label="Dashboard" />
           <Item to="/productos" icon={Package} label="Productos" />
