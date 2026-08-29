@@ -7,21 +7,29 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico'],
+      includeAssets: ['icon.png', 'logo.png'],
       manifest: {
-        name: 'Brahmco Taller - Almacen',
-        short_name: 'Brahmco',
-        description: 'Sistema Almacen Taller offline',
-        theme_color: '#0f172a',
-        icons: [{ src: '/icon-192.png', sizes: '192x192', type: 'image/png' }]
-      },
-      workbox: {
-        runtimeCaching: [
+        name: 'JR Soluciones Tecnológicas - Almacén Pro',
+        short_name: 'JR',
+        description: 'Sistema Profesional de Almacén Taller - JR Soluciones Tecnológicas',
+        theme_color: '#0B2A4A',
+        background_color: '#0B2A4A',
+        display: 'standalone',
+        scope: '/',
+        start_url: '/',
+        icons: [
           {
-            urlPattern: /^https:\/\/ftejswpkqesxakrfjayt\.supabase\.co\/.*/i,
-            handler: 'NetworkFirst',
-            options: { cacheName: 'supabase-cache', networkTimeoutSeconds: 3 }
-          }
+            src: 'icon.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any maskable'
+          },
+          {
+            src: 'logo.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
+          },
         ]
       }
     })
