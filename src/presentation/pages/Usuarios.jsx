@@ -7,7 +7,14 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 // Cliente secundario para crear usuarios sin cerrar tu sesion de admin
-const secondaryClient = createClient(supabaseUrl, supabaseAnonKey)
+const secondaryClient = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+    detectSessionInUrl: false,
+    storageKey: 'secondary-auth-temp'
+  }
+})
 
 export default function Usuarios(){
   const { role } = useRole()
